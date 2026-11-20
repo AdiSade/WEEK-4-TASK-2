@@ -32,6 +32,9 @@ class MainWindow(QWidget):
         self.toolbar.setGeometry(20, 65, 660, 40)
 
         self.draw_graph()
+        
+        with open("style.qss", "r") as f:
+            self.setStyleSheet(f.read())
 
     def load_file(self):
         file_name, _ = QFileDialog.getOpenFileName(self, "Choose ice cream file", "", "CSV files (*.csv)")
