@@ -1,12 +1,14 @@
 from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
+from About import About
 
 
 class MainWindow(QWidget):
 
     def __init__(self):
         super().__init__()
+        self.about_window = About()
         self.setWindowTitle("Ice Cream Profits")
         self.resize(700, 600)
 
@@ -18,6 +20,9 @@ class MainWindow(QWidget):
         self.load_button.clicked.connect(self.load_file)
         
         self.figure = Figure()
+        self.about_button = QPushButton("About", self)
+        self.about_button.setGeometry(530, 20, 150, 30)
+        self.about_button.clicked.connect(self.show_about_window)
         self.ax = self.figure.add_subplot(111)
         self.canvas = FigureCanvasQTAgg(self.figure)
         self.canvas.setParent(self)
@@ -41,6 +46,9 @@ class MainWindow(QWidget):
         self.ax.clear()
         self.ax.plot([1, 2, 3], [1, 4, 9])
         self.canvas.draw()
+
+    def show_about_window(self):
+        self.about_window.show()
 
 
 if __name__ == "__main__":
