@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
 from About import About
+import numpy as np
 
 
 class MainWindow(QWidget):
@@ -40,14 +41,31 @@ class MainWindow(QWidget):
         file_name, _ = QFileDialog.getOpenFileName(self, "Choose ice cream file", "", "CSV files (*.csv)")
         if file_name == "":
             return
-        # TODO: clear the two lists
-        # TODO: open the file and fill self.temperatures and self.profits
-        # TODO: call self.draw_graph() at the end
+        self.profits.clear()
+        self.temperatures.clear()
+        with open(file_name, 'r') as f:
+            header = next(f)
+            for line in f:
+                line = line.strip()
+                if line == "":
+                    continue
+                data = line.split(',')
+                temp = float(data[0])
+                money = float(data[1])
+                self.profits.append(money)
+                self.temperatures.append(temp)
+        self.draw_graph()
     
     def draw_graph(self):
-        # temporary graph - you will replace the content of this method
         self.ax.clear()
-        self.ax.plot([1, 2, 3], [1, 4, 9])
+        self.ax.scatter(self.temperatures, self.profits, 1)
+        self.ax.spines['top'].set_visible(False)
+        self.ax.spines['right'].set_visible(False)
+        self.ax.set_title("Profits Vs Temp")                     # כותרת לגרף
+        self.ax.set_xlabel("temprature")                  # כותרת לציר X
+        self.ax.set_ylabel("profits")
+        if len(self.temperatures) > 1:
+            slope, intercept = np.polyfit(self.temperatures, self.profits, 1)
         self.canvas.draw()
 
     def show_about_window(self):
