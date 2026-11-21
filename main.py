@@ -102,7 +102,7 @@ class MainWindow(QWidget):
             return
         todays_temp = float(todays_temp)
         expected_revenue = self.slope* todays_temp + self.intercept
-        self.predict_result.setText(f"Expected profit: {expected_revenue:.2f}")
+        self.predict_result.setText(f"Expected profit: {expected_revenue:.2f}sheckels")
 
     def show_about_window(self):
         self.about_window.show()
