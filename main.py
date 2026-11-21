@@ -1,4 +1,6 @@
-from PySide6.QtWidgets import QApplication, QWidget, QPushButton, QFileDialog
+from PySide6.QtWidgets import (QApplication, QWidget, QPushButton, QFileDialog,
+                               QLabel, QLineEdit)
+from PySide6.QtGui import QDoubleValidator
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg, NavigationToolbar2QT
 from matplotlib.figure import Figure
 from About import About
@@ -11,10 +13,12 @@ class MainWindow(QWidget):
         super().__init__()
         self.about_window = About()
         self.setWindowTitle("Ice Cream Profits")
-        self.resize(700, 600)
+        self.resize(700, 650)
 
         self.temperatures = []
         self.profits = []
+        self.slope = 0
+        self.intercept = 0
 
         self.load_button = QPushButton("Load File", self)
         self.load_button.setGeometry(20, 20, 150, 30)
@@ -31,6 +35,19 @@ class MainWindow(QWidget):
 
         self.toolbar = NavigationToolbar2QT(self.canvas, self)
         self.toolbar.setGeometry(20, 65, 660, 40)
+        self.predict_label = QLabel("Temperature:", self)
+        self.predict_label.setGeometry(20, 600, 100, 30)
+
+        self.predict_input = QLineEdit("", self)
+        self.predict_input.setGeometry(125, 600, 80, 30)
+        self.predict_input.setValidator(QDoubleValidator())
+
+        self.predict_button = QPushButton("Predict Profit", self)
+        self.predict_button.setGeometry(215, 600, 130, 30)
+        self.predict_button.clicked.connect(self.predict_profit)
+
+        self.predict_result = QLabel("", self)
+        self.predict_result.setGeometry(360, 600, 320, 30)
 
         self.draw_graph()
         
@@ -73,6 +90,12 @@ class MainWindow(QWidget):
             self.ax.plot([x1, x2], [y1, y2], color = "red")
             self.ax.text(0.05, 0.95, f"y = {slope:.2f}x + {intercept:.2f}", transform=self.ax.transAxes)
         self.canvas.draw()
+
+    def predict_profit(self):
+        # TODO: read the temperature from self.predict_input
+        # TODO: calculate the expected profit with the trend line equation
+        # TODO: show the result in self.predict_result
+        pass
 
     def show_about_window(self):
         self.about_window.show()

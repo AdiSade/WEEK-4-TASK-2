@@ -25,3 +25,10 @@ QLabel#title {
 QLabel a {
     color: #1976d2;
 }
+
+QLineEdit {
+    background-color: white;
+    border: 1px solid #f48fb1;
+    border-radius: 4px;
+    padding: 2px 6px;
+}
