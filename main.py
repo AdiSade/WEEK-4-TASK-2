@@ -83,6 +83,8 @@ class MainWindow(QWidget):
         self.ax.set_ylabel("profits")
         if len(self.temperatures) > 1:
             slope, intercept = np.polyfit(self.temperatures, self.profits, 1)
+            self.slope = slope
+            self.intercept = intercept
             x1 = min(self.temperatures)
             x2 = max(self.temperatures)
             y1 = slope * x1 + intercept
@@ -92,6 +94,15 @@ class MainWindow(QWidget):
         self.canvas.draw()
 
     def predict_profit(self):
+        todays_temp = self.predict_input.text()
+        if todays_temp == "":
+            return
+        if self.temperatures == []:
+            self.predict_result.setText("load a file first")
+            return
+        todays_temp = float(todays_temp)
+        expected_revenue = self.slope* todays_temp + self.intercept
+        self.predict_result.setText(f"Expected profit: {expected_revenue:.2f}")
         # TODO: read the temperature from self.predict_input
         # TODO: calculate the expected profit with the trend line equation
         # TODO: show the result in self.predict_result
