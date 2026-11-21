@@ -62,10 +62,16 @@ class MainWindow(QWidget):
         self.ax.spines['top'].set_visible(False)
         self.ax.spines['right'].set_visible(False)
         self.ax.set_title("Profits Vs Temp")                     # כותרת לגרף
-        self.ax.set_xlabel("temprature")                  # כותרת לציר X
+        self.ax.set_xlabel("temperature")                  # כותרת לציר X
         self.ax.set_ylabel("profits")
         if len(self.temperatures) > 1:
             slope, intercept = np.polyfit(self.temperatures, self.profits, 1)
+            x1 = min(self.temperatures)
+            x2 = max(self.temperatures)
+            y1 = slope * x1 + intercept
+            y2 = slope * x2 + intercept
+            self.ax.plot([x1, x2], [y1, y2], color = "red")
+            self.ax.text(0.05, 0.95, f"y = {slope:.2f}x + {intercept:.2f}", transform=self.ax.transAxes)
         self.canvas.draw()
 
     def show_about_window(self):
